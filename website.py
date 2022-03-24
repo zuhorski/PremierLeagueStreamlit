@@ -1,5 +1,5 @@
 import streamlit as st
-from MyClasses import Fixture_DF, Standings_V2, year_season, list_of_specific_files
+from myClasses import Fixture_DF, Standings_V2, year_season, list_of_specific_files
 from MLR_Model import predicted_PointsAndStandingsByModel, data_for_train_test, current_season_data_for_model
 import streamlit as sl
 import pandas as pd
@@ -12,7 +12,7 @@ from matplotlib.figure import Figure
 import seaborn as sns
 
 
-# streamlit run C:/Users/sabzu/Documents/PremierStreamlit/EplStreamlit_v2.py
+
 
 @sl.cache()  # Add home rank column and an away rank column
 def teamRanks(dataframe):
@@ -95,9 +95,9 @@ elif rad == "League":
             sl.write(f"Since the 2016/2017 season, what is the percentile for a current teams {stat} up to {mp} games played?")
 
             c = pd.read_csv(
-                fr"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Current_Seasons_Standings\game{mp}_Standings.csv")
+                fr"C:\Users\sabzu\Documents\PremierLeagueStreamlit\Storage_of_Current_Seasons_Standings\game{mp}_Standings.csv")
             df2 = pd.read_csv(
-                fr"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
+                fr"C:\Users\sabzu\Documents\PremierLeagueStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
                 index_col=0)
             std = np.std(df2[stat])
             ave = np.mean(df2[stat])
@@ -125,7 +125,7 @@ elif rad == "League":
             teamsPlayedMoreThanMin_df = current_season_data_for_model(selected_games, score_fixt_df)
             teamsPlayedMoreThanMin_df = teamsPlayedMoreThanMin_df[teamsPlayedMoreThanMin_df["MP"] == selected_games]
             teamsPlayedMoreThanMin_df.reset_index(drop=True, inplace=True)
-            df2 = pd.read_csv(fr"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
+            df2 = pd.read_csv(fr"C:\Users\sabzu\Documents\PremierLeagueStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
                 index_col=0)
             std = np.std(df2[stat])
             ave = np.mean(df2[stat])
@@ -289,12 +289,12 @@ elif rad == "League":
                     euclid_df.rename(columns={cid: n}, inplace=True)
 
                 euclid_df.to_csv(
-                    "C:/Users/sabzu/Documents/PremierStreamlit/Similarity_CSV_files/current Season similarity.csv",
+                    "C:/Users/sabzu/Documents/PremierLeagueStreamlit/Similarity_CSV_files/current Season similarity.csv",
                     index=True)
 
                 if np.mean(week_break["MP"]) == selected_games:
                     euclid_df.to_csv(
-                        f"C:/Users/sabzu/Documents/PremierStreamlit/Similarity_CSV_files/Similarity_by_Week/game{mp}.csv",
+                        f"C:/Users/sabzu/Documents/PremierLeagueStreamlit/Similarity_CSV_files/Similarity_by_Week/game{mp}.csv",
                         index=True)
 
                 similarity_df = pd.DataFrame(columns=["Team", "MostSimilar", "SimilarityMeasure"])
