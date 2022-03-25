@@ -12,8 +12,6 @@ from matplotlib.figure import Figure
 import seaborn as sns
 
 
-
-
 @sl.cache()  # Add home rank column and an away rank column
 def teamRanks(dataframe):
     home = []
@@ -31,8 +29,9 @@ def teamRanks(dataframe):
     dataframe = dataframe.loc[:, ["Day", "Date", "Home", "Away", "H-Rank", "A-Rank"]]
     return dataframe
 
+
 season = "_21_22"
-g_files = (list_of_specific_files(r"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Current_Seasons_Standings"))
+g_files = (list_of_specific_files(r"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Current_Seasons_Standings"))
 games_played = len(g_files)
 
 score_fixt_df = pd.read_html("https://fbref.com/en/comps/9/schedule/Premier-League-Scores-and-Fixtures")
@@ -58,7 +57,7 @@ if rad == "Current":
         g = sl.number_input("Games Played", min_value=1, max_value=mostGames, value=mostGames)
         st = Standings_V2(fixtures, int(g))
     league_standings = st.standings
-    league_standings["Rank"] = [r for r in range(1,21)]
+    league_standings["Rank"] = [r for r in range(1, 21)]
     league_standings.set_index('Rank', drop=True, inplace=True)
     sl.table(league_standings)  # Current Standings
     sl.write("Games in the next 7 days:")
@@ -92,12 +91,13 @@ elif rad == "League":
             mp = "0" + str(mp)
 
         if selected_games <= games_played:
-            sl.write(f"Since the 2016/2017 season, what is the percentile for a current teams {stat} up to {mp} games played?")
+            sl.write(
+                f"Since the 2016/2017 season, what is the percentile for a current teams {stat} up to {mp} games played?")
 
             c = pd.read_csv(
-                fr"C:\Users\sabzu\Documents\PremierLeagueStreamlit\Storage_of_Current_Seasons_Standings\game{mp}_Standings.csv")
+                fr"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Current_Seasons_Standings\game{mp}_Standings.csv")
             df2 = pd.read_csv(
-                fr"C:\Users\sabzu\Documents\PremierLeagueStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
+                fr"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
                 index_col=0)
             std = np.std(df2[stat])
             ave = np.mean(df2[stat])
@@ -111,13 +111,13 @@ elif rad == "League":
                 Team.append(t)
                 statistic.append(c[stat][id])
                 zscore = (c[stat][id] - ave) / std
-                percent.append((stats.norm.cdf(zscore))*100)
+                percent.append((stats.norm.cdf(zscore)) * 100)
 
             percentitleDF["Team"] = Team
             percentitleDF[stat] = statistic
             percentitleDF["Percentile"] = percent
             percentitleDF.sort_values('Percentile', ascending=False, inplace=True)
-            percentitleDF["Rank"] = [x for x in range(1,21)]
+            percentitleDF["Rank"] = [x for x in range(1, 21)]
             percentitleDF.set_index("Rank", inplace=True)
             sl.table(percentitleDF)
 
@@ -125,7 +125,8 @@ elif rad == "League":
             teamsPlayedMoreThanMin_df = current_season_data_for_model(selected_games, score_fixt_df)
             teamsPlayedMoreThanMin_df = teamsPlayedMoreThanMin_df[teamsPlayedMoreThanMin_df["MP"] == selected_games]
             teamsPlayedMoreThanMin_df.reset_index(drop=True, inplace=True)
-            df2 = pd.read_csv(fr"C:\Users\sabzu\Documents\PremierLeagueStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
+            df2 = pd.read_csv(
+                fr"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
                 index_col=0)
             std = np.std(df2[stat])
             ave = np.mean(df2[stat])
@@ -153,12 +154,15 @@ elif rad == "League":
         sl.write(f"The {top_or_bottom} for {stat} at matchweek {int(mp)} since 2016/2017")
 
         if top_or_bottom == "Top 10%":
-            t10p = pd.read_csv(rf"C:\Users\sabzu\Documents\PremierStreamlit\AllTIme\TopTenPercent\{stat}\TopTenPercentGame{mp}.csv", index_col=0)
-            t10p["Rank"] = [x for x in range(1, len(t10p)+1)]
+            t10p = pd.read_csv(
+                rf"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\AllTime\TopTenPercent\{stat}\TopTenPercentGame{mp}.csv",
+                index_col=0)
+            t10p["Rank"] = [x for x in range(1, len(t10p) + 1)]
             t10p.set_index("Rank", inplace=True)
             sl.table(t10p)
         else:
-            b10p = pd.read_csv(rf"C:\Users\sabzu\Documents\PremierStreamlit\AllTIme\BottomTenPercent\{stat}\BottomTenPercentGame{mp}.csv",
+            b10p = pd.read_csv(
+                rf"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\AllTime\BottomTenPercent\{stat}\BottomTenPercentGame{mp}.csv",
                 index_col=0)
             b10p["Rank"] = [x for x in range(1, len(b10p) + 1)]
             b10p.set_index("Rank", inplace=True)
@@ -173,19 +177,19 @@ elif rad == "League":
             mp = '0' + str(mp)
 
         len_similarity_storage = len(list_of_specific_files(
-            r"C:\Users\sabzu\Documents\PremierStreamlit\Similarity_CSV_files\Similarity_by_Week"))
+            r"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Similarity_CSV_files\Similarity_by_Week"))
 
         if selected_games in range(1, len_similarity_storage + 1):
             euclid_df = pd.read_csv(
-                fr"C:\Users\sabzu\Documents\PremierStreamlit\Similarity_CSV_files\Similarity_by_Week\game{mp}.csv",
+                fr"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Similarity_CSV_files\Similarity_by_Week\game{mp}.csv",
                 index_col=0)
             currentTeamsStandings = pd.read_csv(
-                fr"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Current_Seasons_Standings\game{mp}_Standings.csv")
+                fr"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Current_Seasons_Standings\game{mp}_Standings.csv")
             historicalStandings = pd.read_csv(
-                fr"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
+                fr"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
                 index_col=0)
             full_season = (pd.read_csv(
-                r"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Historical_Standings\game38_standings.csv",
+                r"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Historical_Standings\game38_standings.csv",
                 index_col=0))
 
             similarity_df = pd.DataFrame(columns=["Team", "MostSimilar", "SimilarityMeasure"])
@@ -242,10 +246,10 @@ elif rad == "League":
         else:
             if selected_games == games_played:
                 df = pd.read_csv(
-                    rf"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
+                    rf"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
                     index_col=0)
                 week_break = pd.read_csv(
-                    rf"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Current_Seasons_Standings\game{mp}_Standings.csv")
+                    rf"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Current_Seasons_Standings\game{mp}_Standings.csv")
 
                 c_teams = list(week_break["Team"])
                 list_dict = {t: [] for t in range(len(week_break))}
@@ -259,7 +263,7 @@ elif rad == "League":
                                 df_2 = df2_storage[game_played]
                             else:
                                 df_2 = pd.read_csv(
-                                    fr"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
+                                    fr"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
                                     index_col=0)
                                 df2_storage[game_played] = df_2
 
@@ -289,12 +293,12 @@ elif rad == "League":
                     euclid_df.rename(columns={cid: n}, inplace=True)
 
                 euclid_df.to_csv(
-                    "C:/Users/sabzu/Documents/PremierLeagueStreamlit/Similarity_CSV_files/current Season similarity.csv",
+                    "C:\\Users\\sabzu\\Documents\\PremierLeagueStreamlitProject\\PremierLeagueStreamlit\\Similarity_CSV_files\\current Season similarity.csv",
                     index=True)
 
                 if np.mean(week_break["MP"]) == selected_games:
                     euclid_df.to_csv(
-                        f"C:/Users/sabzu/Documents/PremierLeagueStreamlit/Similarity_CSV_files/Similarity_by_Week/game{mp}.csv",
+                        f"C:\\Users\\sabzu\Documents\\PremierLeagueStreamlitProject\\PremierLeagueStreamlit\\Similarity_CSV_files\\Similarity_by_Week\\game{mp}.csv",
                         index=True)
 
                 similarity_df = pd.DataFrame(columns=["Team", "MostSimilar", "SimilarityMeasure"])
@@ -313,12 +317,12 @@ elif rad == "League":
                 sl.table(similarity_df)
 
                 currentTeamsStandings = pd.read_csv(
-                    fr"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Current_Seasons_Standings\game{mp}_Standings.csv")
+                    fr"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Current_Seasons_Standings\game{mp}_Standings.csv")
                 historicalStandings = pd.read_csv(
-                    fr"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
+                    fr"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
                     index_col=0)
                 full_season = (pd.read_csv(
-                    r"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Historical_Standings\game38_standings.csv",
+                    r"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Historical_Standings\game38_standings.csv",
                     index_col=0))
 
                 selection = sl.selectbox("Choose a team", similarity_df["Team"])
@@ -361,7 +365,7 @@ elif rad == "League":
             else:
                 if selected_games > games_played:
                     df = pd.read_csv(
-                        f"C:\\Users\\sabzu\\Documents\\PremierStreamlit\\Storage_of_Historical_Standings\\game{mp}_standings.csv",
+                        f"C:\\Users\\sabzu\\Documents\\PremierLeagueStreamlitProject\\PremierLeagueStreamlit\\Storage_of_Historical_Standings\\game{mp}_standings.csv",
                         index_col=0)
 
                     teamsPlayedMoreThanMin_df = current_season_data_for_model(selected_games, score_fixt_df)
@@ -407,10 +411,10 @@ elif rad == "League":
                     sl.table(similarity_df)
 
                     historicalStandings = pd.read_csv(
-                        fr"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
+                        fr"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Historical_Standings\game{mp}_standings.csv",
                         index_col=0)
                     full_season = (pd.read_csv(
-                        r"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Historical_Standings\game38_standings.csv",
+                        r"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Historical_Standings\game38_standings.csv",
                         index_col=0))
                     selection = sl.selectbox("Choose a team", similarity_df["Team"])
                     selected_team = teamsPlayedMoreThanMin_df[
@@ -496,7 +500,7 @@ elif rad == "Team History":
     # Get all the previous occurrences of selected team in the historical standings at game X
     team_points = []
     historic_std = pd.read_csv(
-        fr"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Historical_Standings\game{int(played)}_standings.csv",
+        fr"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Historical_Standings\game{int(played)}_standings.csv",
         index_col=0)
     mask = historic_std["Team"].str.contains(team, case=False, na=False)
     historic_std = historic_std[mask]
