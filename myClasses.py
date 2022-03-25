@@ -9,17 +9,17 @@ def list_of_specific_files(r_then_file_directory):
     return list(files)
 
 # @sl.cache(allow_output_mutation=True)
-def year_season():
-    year = []
-    for file_number in range(len(list_of_specific_files(r"C:\Users\sabzu\Documents\All EPL Project Files\Fixtures"))):
-        year_in_file = list_of_specific_files(r"C:\Users\sabzu\Documents\All EPL Project Files\Fixtures")[file_number]
-        split_year_in_file = year_in_file.split(" ")
-        for i in split_year_in_file:
-            if 'xlsx' in i:
-                y = i.split(".")
-                year.append(y[0])
-    year.pop(-1)
-    return year
+# def year_season():
+#     year = []
+#     for file_number in range(len(list_of_specific_files(r"C:\Users\sabzu\Documents\All EPL Project Files\Fixtures"))):
+#         year_in_file = list_of_specific_files(r"C:\Users\sabzu\Documents\All EPL Project Files\Fixtures")[file_number]
+#         split_year_in_file = year_in_file.split(" ")
+#         for i in split_year_in_file:
+#             if 'xlsx' in i:
+#                 y = i.split(".")
+#                 year.append(y[0])
+#     year.pop(-1)
+#     return year
 
 
 # def data_for_train_test(game):
@@ -115,92 +115,6 @@ class Fixture_DF:
             else:
                 self.fixture_list_df.loc[i, "Winner"] = "Tie"
                 self.fixture_list_df.loc[i, "Loser"] = "Tie"
-
-
-class Standings:
-    def __init__(self, fixture):
-        self._fixt = fixture
-        self.standings = pd.DataFrame()
-        self.standings["Team"] = self._fixt.team_list
-        self.standings["MP"] = None
-        self.standings["W"] = None
-        self.standings["D"] = None
-        self.standings["L"] = None
-        self.standings["Pts"] = None
-        self.standings["GF"] = None
-        self.standings["GA"] = None
-        self.standings["GD"] = None
-
-        self._win()
-        self._loss()
-        self._draw()
-        self._points()
-        self._matches_played()
-        self._goals_for()
-        self._goals_against()
-        self._goal_difference()
-        self.standings = (self.standings.sort_values(["Pts", "GD"], ascending=False)).reset_index(drop=True)
-
-    def _win(self):
-        for n, i in enumerate(self._fixt.team_list):
-            t = (self._fixt.fixture_list_df[(self._fixt.fixture_list_df["Home"] == f"{i}") | (self._fixt.fixture_list_df["Away"] == f"{i}")])
-            wins = len(t[t["Winner"] == f"{i}"])
-            self.standings.loc[n, "W"] = wins
-
-    def _loss(self):
-        for n, i in enumerate(self._fixt.team_list):
-            t = (self._fixt.fixture_list_df[(self._fixt.fixture_list_df["Home"] == f"{i}") | (self._fixt.fixture_list_df["Away"] == f"{i}")])
-            wins = len(t[t["Loser"] == f"{i}"])
-            self.standings.loc[n, "L"] = wins
-
-    def _draw(self):
-        for n, i in enumerate(self._fixt.team_list):
-            t = (self._fixt.fixture_list_df[(self._fixt.fixture_list_df["Home"] == f"{i}") | (self._fixt.fixture_list_df["Away"] == f"{i}")])
-            wins = len(t[t["Winner"] == "Tie"])
-            self.standings.loc[n, "D"] = wins
-
-    def _points(self):
-        self.standings["Pts"] = (self.standings["W"] * 3) + (self.standings["D"])
-
-    def _matches_played(self):
-        self.standings["MP"] = self.standings["W"] + self.standings["D"] + self.standings["L"]
-
-    def _goals_for(self):
-        for n, i in enumerate(self._fixt.team_list):
-            goals = 0
-            # Home Goals For
-            h = (self._fixt.fixture_list_df[(self._fixt.fixture_list_df["Home"] == f"{i}")])
-            h = h.reset_index(drop=True)
-            for row in range(len(h)):
-                s = h["Score"][row]
-                goals += int(s[0])
-            # Away Goals For
-            a = (self._fixt.fixture_list_df[(self._fixt.fixture_list_df["Away"] == f"{i}")])
-            a = a.reset_index(drop=True)
-            for r in range(len(a)):
-                s = a["Score"][r]
-                goals += int(s[2])
-            self.standings.loc[n, "GF"] = goals
-
-    def _goals_against(self):
-        for n, i in enumerate(self._fixt.team_list):
-            goals = 0
-            # Home Goals Against
-            h = (self._fixt.fixture_list_df[(self._fixt.fixture_list_df["Home"] == f"{i}")])
-            h = h.reset_index(drop=True)
-            for row in range(len(h)):
-                s = h["Score"][row]
-                goals += int(s[2])
-            # Away Goals Against
-            a = (self._fixt.fixture_list_df[(self._fixt.fixture_list_df["Away"] == f"{i}")])
-            a = a.reset_index(drop=True)
-            for r in range(len(a)):
-                s = a["Score"][r]
-                goals += int(s[0])
-            self.standings.loc[n, "GA"] = goals
-
-    def _goal_difference(self):
-        self.standings["GD"] = self.standings["GF"] - self.standings["GA"]
 
 
 class Standings_V2:
