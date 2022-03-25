@@ -45,9 +45,9 @@ def data_for_train_test(game):
     # df.to_csv("C:\\Users\\sabzu\\Documents\\PremierStreamlit\\Test_Train_datasets\\AggStandingsAtGameX.csv", header=True)
     if game < 10:
         game_string = '0' + str(game)
-        df.to_csv(f"C:\\Users\\sabzu\\Documents\\PremierLeagueStreamlit\\Storage_of_Historical_Standings\\game{game_string}_standings.csv",header=True)
+        df.to_csv(fr"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Historical_Standings\game{game_string}_standings.csv", header=True)
     else:
-        df.to_csv(f"C:\\Users\\sabzu\\Documents\\PremierLeagueStreamlit\\Storage_of_Historical_Standings\\game{game}_standings.csv", header=True)
+        df.to_csv(fr"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Historical_Standings\game{game}_standings.csv", header=True)
     return df
 
 
@@ -67,27 +67,27 @@ def current_season_data_for_model(game, df):
     if np.mean(week_break["MP"]) == float(game).__round__(2):
         if game < 10:
             game_string = '0' + str(game)
-            week_break.to_csv(f"C:\\Users\\sabzu\\Documents\\PremierLeagueStreamlit\\Storage_of_Current_Seasons_Standings\\game{game_string}_Standings.csv",index=False)
+            week_break.to_csv(fr"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Current_Seasons_Standings\game{game_string}_Standings.csv", index=False)
         else:
-            week_break.to_csv(f"C:\\Users\\sabzu\\Documents\\PremierLeagueStreamlit\\Storage_of_Current_Seasons_Standings\\game{game}_Standings.csv", index=False)
+            week_break.to_csv(fr"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Current_Seasons_Standings\game{game}_Standings.csv", index=False)
 
     return week_break
 
 
 def predicted_PointsAndStandingsByModel(game):
-    for file_number in range(len(list_of_specific_files(r"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Historical_Standings"))):
-        game_in_file = list_of_specific_files(r"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Historical_Standings")[file_number]
+    for file_number in range(len(list_of_specific_files(r"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Historical_Standings"))):
+        game_in_file = list_of_specific_files(r"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Historical_Standings")[file_number]
         if game < 10:
             gs = '0' + str(game)
             if (str(gs)) == game_in_file[4:6]:
                 df = pd.read_csv(
-                    rf"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Historical_Standings\{game_in_file}",
+                    rf"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Historical_Standings\{game_in_file}",
                     index_col=0)
                 skip_historical = True
                 break
         elif (str(game)) == game_in_file[4:6]:
             df = pd.read_csv(
-                rf"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Historical_Standings\{game_in_file}",
+                rf"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Historical_Standings\{game_in_file}",
                 index_col=0)
             skip_historical = True
             break
@@ -117,20 +117,20 @@ def predicted_PointsAndStandingsByModel(game):
 
     for file_number in range(
             len(list_of_specific_files(
-                r"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Current_Seasons_Standings"))):
+                r"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Current_Seasons_Standings"))):
         game_in_file = \
-            list_of_specific_files(r"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Current_Seasons_Standings")[
+            list_of_specific_files(r"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Current_Seasons_Standings")[
                 file_number]
         if game < 10:
             gs = '0' + str(game)
             if (str(gs)) == game_in_file[4:6]:
                 current_year_prediction = pd.read_csv(
-                    rf"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Current_Seasons_Standings\{game_in_file}")
+                    rf"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Current_Seasons_Standings\{game_in_file}")
                 skip_current = True
                 break
         elif (str(game)) == game_in_file[4:6]:
             current_year_prediction = pd.read_csv(
-                rf"C:\Users\sabzu\Documents\PremierStreamlit\Storage_of_Current_Seasons_Standings\{game_in_file}")
+                rf"C:\Users\sabzu\Documents\PremierLeagueStreamlitProject\PremierLeagueStreamlit\Storage_of_Current_Seasons_Standings\{game_in_file}")
             skip_current = True
             break
         skip_current = False
