@@ -1,13 +1,11 @@
 import streamlit as st
-from myClasses import Fixture_DF, Standings_V2, year_season, list_of_specific_files
-from MLR_Model import predicted_PointsAndStandingsByModel, data_for_train_test, current_season_data_for_model
+from myClasses import Fixture_DF, Standings_V2, list_of_specific_files
+from MLR_Model import current_season_data_for_model
 import streamlit as sl
 import pandas as pd
 import numpy as np
 from scipy import stats
-import os
 from datetime import date, datetime, timedelta
-import matplotlib
 from matplotlib.figure import Figure
 import seaborn as sns
 
