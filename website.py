@@ -9,7 +9,7 @@ from datetime import date, datetime, timedelta
 from matplotlib.figure import Figure
 import seaborn as sns
 
-
+# streamlit run C:/Users/sabzu/Documents/PremierLeagueStreamlitProject/PremierLeagueStreamlit/website.py
 @sl.cache()  # Add home rank column and an away rank column
 def teamRanks(dataframe):
     home = []
