@@ -87,7 +87,7 @@ class Fixture_DF:
         self._fixture_list = data
         fixture_list = pd.DataFrame(self._fixture_list)
 
-        fixture_list = fixture_list[["Day", "Date", "Home", "Score", "Away", "Referee"]]
+        fixture_list = fixture_list[["Day", "Date", "Home", "Score", "Away"]]
         fixture_list = fixture_list.dropna(subset=["Score"])
         fixture_list = fixture_list.reset_index(drop=True)
         self.fixture_list_df = fixture_list
